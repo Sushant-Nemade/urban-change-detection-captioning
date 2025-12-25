@@ -1,0 +1,1 @@
+[["<START>", "the", "woods", "become", "sparser", "<END>"], ["<START>", "a", "road", "disappears", "from", "the", "top", "right", "corner", "of", "the", "forest", "<END>"], ["<START>", "some", "trees", "are", "removed", "<END>"], ["<START>", "the", "grass", "turns", "barren", "<END>"], ["<START>", "a", "road", "is", "cleared", "from", "the", "woods", "<END>"]]

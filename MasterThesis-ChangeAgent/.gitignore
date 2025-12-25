@@ -1,0 +1,36 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# IDE settings
+.vscode/
+*.code-workspace
+.idea/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+
+# Model checkpoints and large artifacts
+Multi_change/models_ckpt/
+Multi_change/models_ckpt_aug_from_official/
+
+# Generated prediction outputs
+Multi_change/predict_result/
+
+# Runtime caches
+Multi_change/**/__pycache__/
+Multi_change/utils_tool/__pycache__/
+
+# Data and intermediate artifacts (adjust as needed)
+Multi_change/data/**/temp/
+Multi_change/data/**/cache/
+
+# Images and large evaluation dumps (if not source-controlled)
+Multi_change/eval_results_*.csv

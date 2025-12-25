@@ -1,0 +1,1 @@
+[["<START>", "a", "small", "house", "appears", "<END>"], ["<START>", "a", "house", "appears", "in", "the", "meadow", "<END>"], ["<START>", "a", "building", "is", "removed", "from", "the", "bottom", "<END>"], ["<START>", "a", "building", "emerges", "in", "the", "lower", "area", "<END>"], ["<START>", "an", "original", "small", "house", "has", "been", "added", "<END>"]]
