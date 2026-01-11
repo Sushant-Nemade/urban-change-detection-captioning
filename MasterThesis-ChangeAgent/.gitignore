@@ -37,3 +37,6 @@ Multi_change/data/**/cache/
 
 # Images and large evaluation dumps (if not source-controlled)
 Multi_change/eval_results_*.csv
+
+# Local augmented dataset (keep untracked)
+Multi_change/LEVIR_MCI-data/
