@@ -23,7 +23,7 @@ azure_deployment = os.getenv('AZURE_OPENAI_API_DEPLOYMENT')
 
 azure_env_present = all([azure_key, azure_resource, azure_deployment])
 if azure_env_present:
-    llm = GPTAPI(model_type='gpt-4o-mini', key='ENV', azure_mode=True)
+    llm = GPTAPI(model_type='gpt-5', key='ENV', azure_mode=True)
 else:
     if not openai_key:
         print('Warning: OPENAI_API_KEY not set and Azure vars missing. LLM responses will not work without credentials.')

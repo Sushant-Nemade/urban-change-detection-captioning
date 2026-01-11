@@ -32,7 +32,7 @@ else:
 # Get environment variables
 api_key = os.environ.get('AZURE_OPENAI_API_KEY')
 openai_rsn = os.environ.get('AZURE_OPENAI_API_RESOURCE')
-llm_deployment = os.environ.get('LLM_DEPLOYMENT', 'gpt-4o-2024-11-20')
+llm_deployment = os.environ.get('LLM_DEPLOYMENT', 'gpt-5-2025-08-07')
 
 if not api_key or not openai_rsn:
     raise ValueError("AZURE_OPENAI_API_KEY or AZURE_OPENAI_API_RESOURCE not set in .env file")
