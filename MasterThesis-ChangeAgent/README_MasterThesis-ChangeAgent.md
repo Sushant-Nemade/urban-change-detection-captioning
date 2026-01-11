@@ -157,9 +157,9 @@ python train_newoptimized.py \
 	--gpu_id 0
 ```
 
-### Finetune original MCI model (468 → 714 vocab)
+#### Stage s2 fuse (joint finetune)
 
-Use the original weights (for example, MCI_model.pth) and map vocab:
+Use an s1 joint checkpoint and keep both heads active with balanced losses:
 
 ```bash
 python train_newoptimized.py \
@@ -168,10 +168,10 @@ python train_newoptimized.py \
 	--list_path "./data/LEVIR_MCI/" \
 	--token_folder "./data/LEVIR_MCI/tokens/" \
 	--vocab_file "vocab" \
-	--source_vocab_json "./data/LEVIR_MCI/vocab_original.json" \
 	--max_length 46 \
-	--checkpoint "checkpoints/MCI_model.pth" \
-	--num_epochs 15 \
+	--checkpoint "checkpoints/s1_joint_best.pth" \
+	--use_loss_balance 1 \
+	--num_epochs 10 \
 	--gpu_id 0
 ```
 
