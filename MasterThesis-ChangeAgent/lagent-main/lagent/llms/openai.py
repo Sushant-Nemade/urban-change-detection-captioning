@@ -16,6 +16,8 @@ from .base_api import BaseAPIModel
 warnings.simplefilter('default')
 
 OPENAI_API_BASE = 'https://api.openai.com/v1/chat/completions'
+# Azure OpenAI default API version; can be overridden by env `AZURE_OPENAI_API_VERSION`
+AZURE_DEFAULT_API_VERSION = '2024-10-01-preview'
 # OPENAI_API_BASE = 'https://api.xiaoai.plus/v1/chat/completions'
 
 
@@ -62,6 +64,7 @@ class GPTAPI(BaseAPIModel):
                  ],
                  openai_api_base: str = OPENAI_API_BASE,
                  proxies: Optional[Dict] = None,
+                 azure_mode: bool = False,
                  **gen_params):
         if 'top_k' in gen_params:
             warnings.warn('`top_k` parameter is deprecated in OpenAI APIs.',
@@ -76,10 +79,29 @@ class GPTAPI(BaseAPIModel):
         self.gen_params.pop('top_k')
         self.logger = getLogger(__name__)
 
-        if isinstance(key, str):
-            self.keys = [os.getenv('OPENAI_API_KEY') if key == 'ENV' else key]
+        # Determine Azure mode from explicit flag or environment variables
+        azure_env_present = all([
+            os.getenv('AZURE_OPENAI_API_KEY'),
+            os.getenv('AZURE_OPENAI_API_RESOURCE'),
+            os.getenv('AZURE_OPENAI_API_DEPLOYMENT')
+        ])
+        self.azure_mode = bool(azure_mode or azure_env_present)
+
+        if self.azure_mode:
+            # Use Azure API key(s)
+            if isinstance(key, str):
+                self.keys = [
+                    os.getenv('AZURE_OPENAI_API_KEY') if key == 'ENV' else key
+                ]
+            else:
+                self.keys = key
         else:
-            self.keys = key
+            if isinstance(key, str):
+                self.keys = [
+                    os.getenv('OPENAI_API_KEY') if key == 'ENV' else key
+                ]
+            else:
+                self.keys = key
 
         # record invalid keys and skip them when requesting API
         # - keys have insufficient_quota
@@ -91,10 +113,25 @@ class GPTAPI(BaseAPIModel):
         else:
             self.orgs = org
         self.org_ctr = 0
-        self.url = openai_api_base
         self.model_type = model_type
         self.proxies = proxies
         self.json_mode = json_mode
+
+        # Configure API base URL
+        if self.azure_mode:
+            resource = os.getenv('AZURE_OPENAI_API_RESOURCE')
+            deployment = os.getenv('AZURE_OPENAI_API_DEPLOYMENT')
+            api_version = os.getenv('AZURE_OPENAI_API_VERSION',
+                                    AZURE_DEFAULT_API_VERSION)
+            if not resource or not deployment:
+                raise RuntimeError(
+                    'Azure OpenAI requires AZURE_OPENAI_API_RESOURCE and '
+                    'AZURE_OPENAI_API_DEPLOYMENT to be set.')
+            self.url = (
+                f'https://{resource}.openai.azure.com/openai/deployments/'
+                f'{deployment}/chat/completions?api-version={api_version}')
+        else:
+            self.url = openai_api_base
 
     def chat(
         self,
@@ -203,10 +240,16 @@ class GPTAPI(BaseAPIModel):
 
                 key = self.keys[self.key_ctr]
 
-            header = {
-                'Authorization': f'Bearer {key}',
-                'content-type': 'application/json',
-            }
+            if self.azure_mode:
+                header = {
+                    'api-key': key,
+                    'content-type': 'application/json',
+                }
+            else:
+                header = {
+                    'Authorization': f'Bearer {key}',
+                    'content-type': 'application/json',
+                }
 
             if self.orgs:
                 with Lock():
@@ -218,15 +261,27 @@ class GPTAPI(BaseAPIModel):
             response = dict()
             try:
                 gen_params_new = gen_params.copy()
-                data = dict(
-                    model=self.model_type,
-                    messages=messages,
-                    max_tokens=max_tokens,
-                    n=1,
-                    stop=gen_params_new.pop('stop_words'),
-                    frequency_penalty=gen_params_new.pop('repetition_penalty'),
-                    **gen_params_new,
-                )
+                if self.azure_mode:
+                    data = dict(
+                        messages=messages,
+                        max_tokens=max_tokens,
+                        n=1,
+                        stop=gen_params_new.pop('stop_words'),
+                        frequency_penalty=gen_params_new.pop(
+                            'repetition_penalty'),
+                        **gen_params_new,
+                    )
+                else:
+                    data = dict(
+                        model=self.model_type,
+                        messages=messages,
+                        max_tokens=max_tokens,
+                        n=1,
+                        stop=gen_params_new.pop('stop_words'),
+                        frequency_penalty=gen_params_new.pop(
+                            'repetition_penalty'),
+                        **gen_params_new,
+                    )
                 if self.json_mode:
                     data['response_format'] = {'type': 'json_object'}
                 raw_response = requests.post(
@@ -312,10 +367,16 @@ class GPTAPI(BaseAPIModel):
 
             key = self.keys[self.key_ctr]
 
-            header = {
-                'Authorization': f'Bearer {key}',
-                'content-type': 'application/json',
-            }
+            if self.azure_mode:
+                header = {
+                    'api-key': key,
+                    'content-type': 'application/json',
+                }
+            else:
+                header = {
+                    'Authorization': f'Bearer {key}',
+                    'content-type': 'application/json',
+                }
 
             if self.orgs:
                 self.org_ctr += 1
@@ -326,15 +387,27 @@ class GPTAPI(BaseAPIModel):
             response = dict()
             try:
                 gen_params_new = gen_params.copy()
-                data = dict(
-                    model=self.model_type,
-                    messages=messages,
-                    max_tokens=max_tokens,
-                    n=1,
-                    stop=gen_params_new.pop('stop_words'),
-                    frequency_penalty=gen_params_new.pop('repetition_penalty'),
-                    **gen_params_new,
-                )
+                if self.azure_mode:
+                    data = dict(
+                        messages=messages,
+                        max_tokens=max_tokens,
+                        n=1,
+                        stop=gen_params_new.pop('stop_words'),
+                        frequency_penalty=gen_params_new.pop(
+                            'repetition_penalty'),
+                        **gen_params_new,
+                    )
+                else:
+                    data = dict(
+                        model=self.model_type,
+                        messages=messages,
+                        max_tokens=max_tokens,
+                        n=1,
+                        stop=gen_params_new.pop('stop_words'),
+                        frequency_penalty=gen_params_new.pop(
+                            'repetition_penalty'),
+                        **gen_params_new,
+                    )
                 if self.json_mode:
                     data['response_format'] = {'type': 'json_object'}
                 raw_response = requests.post(

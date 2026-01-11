@@ -1,24 +1,43 @@
 from lagent.agents import ReAct
 from lagent.actions import ActionExecutor, GoogleSearch, PythonInterpreter, Visual_Change_Process_PythonInterpreter
-from lagent.llms import HFTransformer, HFTransformerCasualLM
 from lagent.llms import GPTAPI
 import os
+from dotenv import load_dotenv
+import pathlib
 
 # os.environ["http_proxy"] = "http://127.0.0.1:7890"
 # os.environ["https_proxy"] = "http://127.0.0.1:7890"
 
-llm = GPTAPI(model_type='gpt-3.5-turbo', key='xxxxx') # KEY from openai
-# llm = HFTransformer(r'internlm/internlm-chat-7b-v1_1')
-# llm = HFTransformerCasualLM(r'internlm/internlm-chat-7b-v1_1')
-search_tool = GoogleSearch(api_key='xxxx') # key from google search
+# Load .env: prefer provided Azure path, fallback to local .env
+preferred_env = r"C:\ChangeAgentMCI2\Multi_change\.env"
+local_env = str(pathlib.Path(__file__).with_name('.env'))
+if os.path.exists(preferred_env):
+    load_dotenv(preferred_env)
+elif os.path.exists(local_env):
+    load_dotenv(local_env)
+
+openai_key = os.getenv('OPENAI_API_KEY')
+azure_key = os.getenv('AZURE_OPENAI_API_KEY')
+azure_resource = os.getenv('AZURE_OPENAI_API_RESOURCE')
+azure_deployment = os.getenv('AZURE_OPENAI_API_DEPLOYMENT')
+
+azure_env_present = all([azure_key, azure_resource, azure_deployment])
+if azure_env_present:
+    llm = GPTAPI(model_type='gpt-4o-mini', key='ENV', azure_mode=True)
+else:
+    if not openai_key:
+        print('Warning: OPENAI_API_KEY not set and Azure vars missing. LLM responses will not work without credentials.')
+    llm = GPTAPI(model_type='gpt-4o-mini', key=openai_key)
+
+google_key = os.getenv('GOOGLE_API_KEY')
+search_tool = GoogleSearch(api_key=google_key) if google_key else None
 python_interpreter = PythonInterpreter()
 imgchange_python_interpreter = Visual_Change_Process_PythonInterpreter()
 
-chatbot = ReAct(
-    llm=llm,
-    action_executor=ActionExecutor(
-    actions=[search_tool, imgchange_python_interpreter]),
-)
+actions = [imgchange_python_interpreter]
+if search_tool:
+    actions.insert(0, search_tool)
+chatbot = ReAct(llm=llm, action_executor=ActionExecutor(actions=actions))
 
 if __name__ == '__main__':
     history = []
