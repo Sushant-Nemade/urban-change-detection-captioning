@@ -12,6 +12,9 @@ __pycache__/
 *.code-workspace
 .idea/
 
+# Virtual environments
+.venv/
+
 # Logs and temporary files
 *.log
 *.tmp
