@@ -5,8 +5,6 @@ func_timeout
 griffe
 json5
 jsonschema
-jupyter
-jupyter_client
 phx-class-registry
 requests
 streamlit

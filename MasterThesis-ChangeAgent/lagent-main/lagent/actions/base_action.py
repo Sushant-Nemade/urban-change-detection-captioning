@@ -11,9 +11,30 @@ try:
 except ImportError:
     from typing_extensions import Annotated
 
-from class_registry import AutoRegister, ClassRegistry
-from griffe import Docstring
-from griffe.enumerations import DocstringSectionKind
+try:
+    from class_registry import AutoRegister, ClassRegistry
+except Exception:
+    class ClassRegistry(dict):
+        def __init__(self, name_field, unique=False):
+            super().__init__()
+            self.name_field = name_field
+            self.unique = unique
+
+        def register(self, cls):
+            name = getattr(cls, self.name_field, cls.__name__)
+            if self.unique and name in self:
+                raise KeyError(f'duplicate class name: {name}')
+            self[name] = cls
+
+    def AutoRegister(registry, base_meta):
+        class _AutoRegister(base_meta):
+            def __new__(mcs, name, bases, attrs):
+                cls = super().__new__(mcs, name, bases, attrs)
+                registry.register(cls)
+                return cls
+
+        return _AutoRegister
+from griffe import Docstring, DocstringSectionKind
 
 from ..schema import ActionReturn, ActionStatusCode
 from .parser import BaseParser, JsonParser, ParseError
