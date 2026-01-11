@@ -37,7 +37,7 @@ Expected LEVIR-MCI layout (adapt `DATA_PATH_ROOT` accordingly):
 		test/  A/ B/ label/ label_rgb/
 ```
 
-Local augmented drop (extension of https://huggingface.co/datasets/lcybuaa/LEVIR-MCI/tree/main):
+Local augmented drop (extension of [LEVIR-MCI](https://huggingface.co/datasets/lcybuaa/LEVIR-MCI/tree/main)):
 
 - Multi_change/LEVIR_MCI-data/LEVIR-MCI-dataset
 
@@ -280,3 +280,7 @@ Typical usage: launch app → provide checkpoint → upload A/B → predict → 
 - Adjust all placeholder paths (`<DATA_PATH_ROOT>`, `checkpoints/...`, etc.) to your environment.
 - Keep image normalization consistent with training (the code handles this; do not pre-normalize differently).
 - If you change vocab or `max_length`, regenerate tokens and vocab before training/eval.
+
+## Acknowledgement
+
+Thanks to the following repository: [Change-Agent](https://github.com/Chen-Yang-Liu/Change-Agent.git)
