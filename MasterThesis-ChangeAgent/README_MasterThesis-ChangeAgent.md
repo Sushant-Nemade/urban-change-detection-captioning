@@ -37,6 +37,10 @@ Expected LEVIR-MCI layout (adapt `DATA_PATH_ROOT` accordingly):
 		test/  A/ B/ label/ label_rgb/
 ```
 
+Local augmented drop (extension of https://huggingface.co/datasets/lcybuaa/LEVIR-MCI/tree/main):
+
+- Multi_change/LEVIR_MCI-data/LEVIR-MCI-dataset
+
 Set `DATA_PATH_ROOT` inside:
 
 - Multi_change/augment_dataset_new.py
@@ -104,6 +108,8 @@ Key arguments:
 - `--data_folder`, `--list_path`, `--token_folder`, `--vocab_file`, `--max_length`
 - `--gpu_id`, `--batch_size`, `--num_epochs`, `--encoder_lr`, `--decoder_lr`
 - Optional: `--use_loss_balance 1` for joint loss balance, `--checkpoint` to resume, `--cap_unfreeze_encoder_trans 1` to unfreeze encoder in caption finetuning.
+
+Why stages (quick): s1 pretrains both heads jointly to build shared scene/change features; s2 caption-only sharpens language grounding; s2 detection-only (optional) sharpens masks; s2-fuse rejoins both heads with balanced losses to recover joint performance. Recommended schedule: s1 joint (goal=2) → s2 caption-only (goal=1) → s2 detection-only (goal=0, optional) → s2-fuse joint (goal=2 with loss balance); final reports use the best s2-fuse checkpoint.
 
 ### Train from scratch on augmented LEVIR-MCI (714 vocab)
 
@@ -181,6 +187,8 @@ Hyperparameters:
 
 ## Evaluation
 
+Provided final checkpoint: `Multi_change/models_ckpt/MCI_model_augmented.pth` (renamed). Use it in the commands below or swap for your own.
+
 ### Single checkpoint (test_new.py)
 
 Computes detection (mIoU/IoU/accuracy) and caption metrics (BLEU-1..4, METEOR, ROUGE-L, CIDEr). Options: `--beam_size`, `--det_tta`, `--save_mask`, `--save_caption`, `--result_path`.
@@ -195,7 +203,7 @@ python test_new.py \
 	--token_folder "./data/LEVIR_MCI/tokens/" \
 	--vocab_file "vocab" \
 	--max_length 46 \
-	--checkpoint "checkpoints/best_model.pth" \
+	--checkpoint "./models_ckpt/MCI_model_augmented.pth" \
 	--beam_size 5 \
 	--det_tta 0 \
 	--save_mask --save_caption \
@@ -239,7 +247,7 @@ cd Multi_change
 python predict_new.py \
 	--imgA_path "samples/A.png" \
 	--imgB_path "samples/B.png" \
-	--checkpoint "checkpoints/aug_model.pth" \
+	--checkpoint "./models_ckpt/MCI_model_augmented.pth" \
 	--list_path "./data/LEVIR_MCI" \
 	--mask_save_path "./CDmask.png" \
 	--save_mask_size A \
