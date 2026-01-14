@@ -1,19 +1,5 @@
 # CDCC_MT_01
 
-
-
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-# CDCC_MT_01
-
 This workspace contains the code and resources for the Master Thesis project under:
 
 - [MasterThesis-ChangeAgent/](MasterThesis-ChangeAgent/)
@@ -76,4 +62,18 @@ These are not required for core training/inference:
 
 - Dataset augmentation using Azure/OpenAI: `pip install -r Multi_change\requirements-augmentation.txt`
 - Experimental lagent-based agent demo: `pip install -r Multi_change\requirements-agent.txt`
+
+### Which requirements file do I need?
+
+- Core training/inference + Streamlit demo (`streamlit_app.py`): `Multi_change\requirements.txt`
+- Exact reproduction (fully pinned): `Multi_change\requirements-lock.txt`
+- Dataset augmentation (`augment_dataset_new.py`, `azure_diagnostic.py`): `Multi_change\requirements-augmentation.txt`
+- Experimental lagent demo (`web_demo.py`, `try_chat.py`): `Multi_change\requirements-agent.txt`
+
+### Local-only (not uploaded)
+
+Some experimental files are kept untracked on purpose (ignored via `.gitignore`) and will not appear in the remote repository, including:
+
+- `MasterThesis-ChangeAgent/Multi_change/agent_web_demo.py`
+- `MasterThesis-ChangeAgent/Multi_change/local_predictor.py`
 
