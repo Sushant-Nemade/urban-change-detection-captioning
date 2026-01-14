@@ -3,26 +3,16 @@ from lagent.actions import ActionExecutor, GoogleSearch, PythonInterpreter, Visu
 from lagent.llms import GPTAPI
 import os
 from dotenv import load_dotenv
-import pathlib
 import argparse
 
 # os.environ["http_proxy"] = "http://127.0.0.1:7890"
 # os.environ["https_proxy"] = "http://127.0.0.1:7890"
 
-def build_chatbot(env_path: str | None = None) -> ReAct:
-    # Load .env: use provided path, else default preferred, else local .env
-    preferred_env = r"C:\ChangeAgentMCI2\Multi_change\.env"
-    local_env = str(pathlib.Path(__file__).with_name('.env'))
-    selected_env = None
-    if env_path and os.path.exists(env_path):
-        selected_env = env_path
-    elif os.path.exists(preferred_env):
-        selected_env = preferred_env
-    elif os.path.exists(local_env):
-        selected_env = local_env
-    if selected_env:
-        load_dotenv(selected_env)
-        print(f"Loaded environment from: {selected_env}")
+def build_chatbot(env_path: str) -> ReAct:
+    if not env_path or not os.path.exists(env_path):
+        raise RuntimeError(f"Missing or invalid --env path: {env_path!r}")
+    load_dotenv(env_path)
+    print(f"Loaded environment from: {env_path}")
 
     openai_key = os.getenv('OPENAI_API_KEY')
     azure_key = os.getenv('AZURE_OPENAI_API_KEY')
@@ -34,7 +24,21 @@ def build_chatbot(env_path: str | None = None) -> ReAct:
         llm = GPTAPI(model_type='gpt-5', key='ENV', azure_mode=True)
     else:
         if not openai_key:
-            print('Warning: OPENAI_API_KEY not set and Azure vars missing. LLM responses will not work without credentials.')
+            missing = []
+            if not azure_key:
+                missing.append('AZURE_OPENAI_API_KEY')
+            if not azure_resource:
+                missing.append('AZURE_OPENAI_API_RESOURCE')
+            if not azure_deployment:
+                missing.append('AZURE_OPENAI_API_DEPLOYMENT')
+            missing.append('OPENAI_API_KEY')
+            raise RuntimeError(
+                'Missing credentials. Provide either OpenAI or Azure OpenAI:\n'
+                f'  Missing vars: {", ".join(missing)}\n'
+                'Expected one of:\n'
+                '  - OPENAI_API_KEY\n'
+                '  - AZURE_OPENAI_API_KEY, AZURE_OPENAI_API_RESOURCE, AZURE_OPENAI_API_DEPLOYMENT'
+            )
         llm = GPTAPI(model_type='gpt-4o-mini', key=openai_key)
 
     google_key = os.getenv('GOOGLE_API_KEY')
@@ -49,16 +53,27 @@ def build_chatbot(env_path: str | None = None) -> ReAct:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run Change-Agent chat CLI')
-    parser.add_argument('--env', type=str, help='Path to .env file with Azure/OpenAI credentials')
+    parser.add_argument('--env', type=str, required=True, help='Path to .env file with Azure/OpenAI credentials')
+    parser.add_argument('--once', type=str, help='Run a single prompt and exit')
     args = parser.parse_args()
 
     chatbot = build_chatbot(args.env)
     history = []
-    while True:
-        user_input = input('\n||<User>||Please input your message: ')
+    if args.once:
+        user_input = args.once
+        print('\n||<User>|| One-shot message:')
+        print(user_input)
         print('\n||Start thinking ...')
         history.append(dict(role='user', content=user_input))
         agent_return = chatbot.chat(history)
-        history.append(dict(role='assistant', content=agent_return.response))
         print('\n||<Change-Agent>|| The response of Agent:')
         print(agent_return.response)
+    else:
+        while True:
+            user_input = input('\n||<User>||Please input your message: ')
+            print('\n||Start thinking ...')
+            history.append(dict(role='user', content=user_input))
+            agent_return = chatbot.chat(history)
+            history.append(dict(role='assistant', content=agent_return.response))
+            print('\n||<Change-Agent>|| The response of Agent:')
+            print(agent_return.response)

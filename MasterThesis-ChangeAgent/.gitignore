@@ -14,6 +14,9 @@ __pycache__/
 
 # Virtual environments
 .venv/
+venv/
+ENV/
+env/
 
 # Logs and temporary files
 *.log
@@ -26,6 +29,16 @@ Multi_change/models_ckpt_aug_from_official/
 
 # Generated prediction outputs
 Multi_change/predict_result/
+
+# Streamlit runtime outputs (local)
+Multi_change/app_outputs/
+
+# Temporary working directory used by demos (local)
+tmp_dir/
+
+# Local-only experimental agent UI + helpers (keep untracked)
+Multi_change/agent_web_demo.py
+Multi_change/local_predictor.py
 
 # Runtime caches
 Multi_change/**/__pycache__/

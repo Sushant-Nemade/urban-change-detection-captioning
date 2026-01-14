@@ -1,0 +1,15 @@
+## Optional dependencies for the experimental lagent-based agent demo (web_demo.py)
+## Install after the core requirements:
+##   pip install -r requirements.txt
+##   pip install -r requirements-agent.txt
+
+python-dotenv==1.1.1
+openai==1.91.0
+requests
+
+# Local editable install of lagent framework bundled in this repo
+-e ../lagent-main
+
+# Agent demo utilities
+tiktoken==0.12.0
+google-search-results==2.4.2

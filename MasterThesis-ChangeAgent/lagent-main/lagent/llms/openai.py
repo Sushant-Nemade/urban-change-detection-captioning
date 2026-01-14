@@ -264,7 +264,7 @@ class GPTAPI(BaseAPIModel):
                 if self.azure_mode:
                     data = dict(
                         messages=messages,
-                        max_tokens=max_tokens,
+                        max_completion_tokens=max_tokens,
                         n=1,
                         stop=gen_params_new.pop('stop_words'),
                         frequency_penalty=gen_params_new.pop(
@@ -390,7 +390,7 @@ class GPTAPI(BaseAPIModel):
                 if self.azure_mode:
                     data = dict(
                         messages=messages,
-                        max_tokens=max_tokens,
+                        max_completion_tokens=max_tokens,
                         n=1,
                         stop=gen_params_new.pop('stop_words'),
                         frequency_penalty=gen_params_new.pop(

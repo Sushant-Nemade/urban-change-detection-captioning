@@ -1,17 +1,43 @@
 import copy
 import os
+import pathlib
 
 import streamlit as st
+from dotenv import load_dotenv
 from streamlit.logger import get_logger
 
 from lagent.actions import ActionExecutor, GoogleSearch, PythonInterpreter, Visual_Change_Process_PythonInterpreter
 from lagent.agents.react import ReAct
 from lagent.llms import GPTAPI
 from lagent.llms.huggingface import HFTransformerCasualLM
-os.environ["SERPER_API_KEY"] = 'xxxxxxx'
-opanai_key = 'xxxxxxxxx'
-os.environ["http_proxy"] = "http://localhost:7890"
-os.environ["https_proxy"] = "http://localhost:7890"
+
+def load_env_config(env_path: str | None):
+    """Load env vars and return config needed for UI/model selection."""
+    env_path_clean = None
+    if env_path:
+        env_path_clean = env_path.strip().strip('"').strip("'")
+    if env_path_clean and os.path.exists(env_path_clean):
+        load_dotenv(env_path_clean, override=True)
+
+    azure_env_present = all([
+        os.getenv('AZURE_OPENAI_API_KEY'),
+        os.getenv('AZURE_OPENAI_API_RESOURCE'),
+        os.getenv('AZURE_OPENAI_API_DEPLOYMENT')
+    ])
+    openai_key = os.getenv('OPENAI_API_KEY')
+    google_key = os.getenv('GOOGLE_API_KEY')
+
+    deployment_options = []
+    primary_deployment = os.getenv('AZURE_OPENAI_API_DEPLOYMENT')
+    extra_deployments = os.getenv('AZURE_OPENAI_API_DEPLOYMENTS')
+    if primary_deployment:
+        deployment_options.extend([item.strip() for item in primary_deployment.split(',') if item.strip()])
+    if extra_deployments:
+        for item in [i.strip() for i in extra_deployments.split(',') if i.strip()]:
+            if item not in deployment_options:
+                deployment_options.append(item)
+
+    return azure_env_present, openai_key, google_key, deployment_options
 class SessionState:
 
     def init_state(self):
@@ -19,15 +45,10 @@ class SessionState:
         st.session_state['assistant'] = []
         st.session_state['user'] = []
         st.session_state['history'] = []
-
-        action_list = [Visual_Change_Process_PythonInterpreter(), GoogleSearch()]
-        st.session_state['plugin_map'] = {
-            action.name: action
-            for action in action_list
-        }
         st.session_state['model_map'] = {}
         st.session_state['model_selected'] = None
         st.session_state['plugin_actions'] = set()
+        st.session_state['plugin_map'] = {}
 
     def clear_state(self):
         """Clear the existing session state."""
@@ -44,6 +65,11 @@ class StreamlitUI:
     def __init__(self, session_state: SessionState):
         self.init_streamlit()
         self.session_state = session_state
+        # will be set during sidebar setup
+        self.azure_env_present = False
+        self.openai_key = None
+        self.google_key = None
+        self.deployment_options = []
 
     def init_streamlit(self):
         """Initialize Streamlit's UI settings."""
@@ -57,8 +83,47 @@ class StreamlitUI:
 
     def setup_sidebar(self):
         """Setup the sidebar for model and plugin selection."""
+        # Env path input and reload
+        default_env = os.getenv('CHANGE_AGENT_ENV') or str(pathlib.Path(__file__).with_name('.env'))
+        if 'env_path' not in st.session_state:
+            st.session_state['env_path'] = default_env
+
+        env_path = st.sidebar.text_input('Path to .env', value=st.session_state['env_path'])
+        env_path_clean = env_path.strip().strip('"').strip("'")
+        if env_path_clean and not os.path.exists(env_path_clean):
+            st.sidebar.error(f'.env not found: {env_path_clean}')
+        if st.sidebar.button('Load .env'):
+            st.session_state['env_path'] = env_path_clean or env_path
+            st.session_state['model_map'].clear()
+            st.session_state['model_selected'] = None
+            st.session_state['history'] = []
+            st.session_state['assistant'] = []
+            st.session_state['user'] = []
+
+        # Load config from the chosen env
+        self.azure_env_present, self.openai_key, self.google_key, self.deployment_options = load_env_config(env_path_clean or env_path)
+
+        if not self.azure_env_present and not self.openai_key:
+            st.sidebar.error('Missing OpenAI/Azure credentials in environment.')
+
+        # Rebuild plugin map based on current google key
+        action_list = [Visual_Change_Process_PythonInterpreter()]
+        if self.google_key:
+            action_list.insert(0, GoogleSearch(api_key=self.google_key))
+        st.session_state['plugin_map'] = {action.name: action for action in action_list}
+
+        # Model options
+        model_options = []
+        if self.deployment_options:
+            model_options.extend(self.deployment_options)
+        elif self.openai_key:
+            model_options.append(os.getenv('OPENAI_MODEL', 'gpt-4o-mini'))
+        else:
+            model_options.append('gpt-3.5-turbo')
+        model_options.append('internlm')
+
         model_name = st.sidebar.selectbox(
-            '**Language Model Selection:**', options=['gpt-3.5-turbo', 'internlm'])
+            '**Language Model Selection:**', options=model_options)
         if model_name != st.session_state['model_selected']:
             model = self.init_model(model_name)
             self.session_state.clear_state()
@@ -84,17 +149,33 @@ class StreamlitUI:
         if st.sidebar.button('**Clear conversation**', key='clear'):
             self.session_state.clear_state()
         uploaded_file_A = st.sidebar.file_uploader(
-            '**Upload Image_A:**', type=['png', 'jpg', 'jpeg'])#, 'mp4', 'mp3', 'wav'
+            '**Upload Image_A:**', type=['png', 'jpg', 'jpeg'])
         uploaded_file_B = st.sidebar.file_uploader(
             '**Upload Image_B:**', type=['png', 'jpg', 'jpeg'])
-        return model_name, model, plugin_action, uploaded_file_A, uploaded_file_B
+
+        task_choice = st.sidebar.selectbox('**Analysis Task:**', ['Change Detection', 'Change Captioning', 'Both'])
+        custom_instruction = st.sidebar.text_area('**Additional Instructions (optional):**', value='')
+        run_prediction = st.sidebar.button('**Run Prediction**')
+
+        return model_name, model, plugin_action, uploaded_file_A, uploaded_file_B, task_choice, custom_instruction, run_prediction
 
     def init_model(self, option):
         """Initialize the model based on the selected option."""
         if option not in st.session_state['model_map']:
             if option.startswith('gpt'):
-                st.session_state['model_map'][option] = GPTAPI(
-                    model_type=option, key=opanai_key)
+                if self.azure_env_present:
+                    # Update active deployment to the selected option when using Azure
+                    if option in self.deployment_options:
+                        os.environ['AZURE_OPENAI_API_DEPLOYMENT'] = option
+                    model_name = os.getenv('AZURE_OPENAI_API_DEPLOYMENT', option)
+                    st.session_state['model_map'][option] = GPTAPI(
+                        model_type=model_name, key='ENV', azure_mode=True)
+                elif self.openai_key:
+                    st.session_state['model_map'][option] = GPTAPI(
+                        model_type=option, key=self.openai_key)
+                else:
+                    st.sidebar.error('Missing OpenAI/Azure credentials in environment.')
+                    st.stop()
             else:
                 st.session_state['model_map'][option] = HFTransformerCasualLM(
                     'internlm/internlm2_5-7b-chat')
@@ -173,7 +254,7 @@ def main():
             page_title='RSAgent-web',
             page_icon='./docs/imgs/lagent_icon.png')
         st.header('🌏:blue[RS] Agent ', divider='rainbow')
-    model_name, model, plugin_action, uploaded_file_A, uploaded_file_B = st.session_state[
+    model_name, model, plugin_action, uploaded_file_A, uploaded_file_B, task_choice, custom_instruction, run_prediction = st.session_state[
         'ui'].setup_sidebar()
 
     # Initialize chatbot if it is not already initialized
@@ -189,6 +270,44 @@ def main():
         st.session_state['ui'].render_assistant(agent_return)
     # User input form at the bottom (this part will be at the bottom)
     # with st.form(key='my_form', clear_on_submit=True):
+
+    if run_prediction:
+        # Validate inputs
+        if not uploaded_file_A or not uploaded_file_B:
+            st.warning('Please upload both Image_A and Image_B to run prediction.')
+        else:
+            # Save uploaded files to tmp_dir
+            file_path_A = os.path.join(root_dir, uploaded_file_A.name)
+            with open(file_path_A, 'wb') as tmpfile:
+                tmpfile.write(uploaded_file_A.read())
+            st.image(file_path_A, caption='Uploaded Image_A')
+
+            file_path_B = os.path.join(root_dir, uploaded_file_B.name)
+            with open(file_path_B, 'wb') as tmpfile:
+                tmpfile.write(uploaded_file_B.read())
+            st.image(file_path_B, caption='Uploaded Image_B')
+
+            base_instruction = {
+                'Change Detection': 'Perform visual change detection and produce a change mask and summary.',
+                'Change Captioning': 'Describe the differences between the images in clear, concise language.',
+                'Both': 'Perform visual change detection and provide a detailed change caption.'
+            }[task_choice]
+            prompt = (
+                f"Image_A path: {file_path_A}. Image_B path: {file_path_B}. "
+                f"{base_instruction} Use the tool Visual_Change_Process_PythonInterpreter. "
+                f"Return any generated image file paths and a short textual summary."
+            )
+            if custom_instruction:
+                prompt += f" Additional notes: {custom_instruction}"
+
+            st.session_state['ui'].render_user(prompt)
+            st.session_state['user'].append(prompt)
+            st.session_state['history'].append(dict(role='user', content=prompt))
+            agent_return = st.session_state['chatbot'].chat(st.session_state['history'])
+            st.session_state['history'].append(dict(role='assistant', content=agent_return.response))
+            st.session_state['assistant'].append(copy.deepcopy(agent_return))
+            logger.info(agent_return.inner_steps)
+            st.session_state['ui'].render_assistant(agent_return)
 
     if user_input := st.chat_input(''):
         st.session_state['ui'].render_user(user_input)

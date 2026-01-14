@@ -8,13 +8,66 @@ Bi-temporal urban change detection and captioning on LEVIR-MCI with a dual-head 
 - GPU with CUDA for training (CPU works but is slow)
 - Key libraries: PyTorch, mmcv/mmsegmentation, timm, einops, imageio, opencv-python, scikit-image, tqdm, nltk, pycocotools, streamlit
 
-Create and activate a virtual environment, then install dependencies:
+### Recommended setup (after cloning)
+
+This repository contains multiple folders that may look like environments (e.g. `venv/`, `.venv/` in different directories). To avoid mixing dependencies, use **one** environment for this project.
+
+Recommended: create the environment under `MasterThesis-ChangeAgent/.venv` and install from `Multi_change/requirements.txt`.
+
+Create and activate a virtual environment, then install dependencies.
+
+Windows (PowerShell):
+
+```powershell
+cd MasterThesis-ChangeAgent
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r Multi_change\requirements.txt
+```
+
+Linux/macOS (bash/zsh):
 
 ```bash
+cd MasterThesis-ChangeAgent
 python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install --upgrade pip
+source .venv/bin/activate
+python -m pip install --upgrade pip
 pip install -r Multi_change/requirements.txt
+```
+
+Notes:
+
+- `Multi_change/requirements.txt` is the recommended, maintainable set for training/inference.
+- `Multi_change/requirements-lock.txt` is a fully pinned snapshot (including transitive deps) for exact reproduction.
+- Optional extras (not required for training/inference):
+	- `Multi_change/requirements-augmentation.txt` for dataset augmentation scripts (Azure/OpenAI)
+	- `Multi_change/requirements-agent.txt` for the experimental `web_demo.py` (lagent-based)
+
+#### Run the Streamlit demo (Multi_change)
+
+```bash
+cd Multi_change
+python -m streamlit run streamlit_app.py
+```
+
+If you prefer not to rely on activation, you can always use the interpreter explicitly:
+
+```bash
+MasterThesis-ChangeAgent/.venv/Scripts/python.exe -m streamlit run Multi_change/streamlit_app.py
+```
+
+#### Troubleshooting: `torch.utils._pytree.register_pytree_node`
+
+If you see an error like:
+
+`AttributeError: module 'torch.utils._pytree' has no attribute 'register_pytree_node'`
+
+it indicates a PyTorch/Transformers version mismatch. The pinned versions in `Multi_change/requirements.txt` are selected to avoid this. If your environment already had older PyTorch installed, reinstall/upgrade PyTorch to match the pinned versions:
+
+```bash
+pip install --upgrade --extra-index-url https://download.pytorch.org/whl/cu121 \
+	torch==2.2.2+cu121 torchvision==0.17.2+cu121 torchaudio==2.2.2+cu121
 ```
 
 SegFormer pretrained weights (at least `mit_b1.pth`) must be placed here:

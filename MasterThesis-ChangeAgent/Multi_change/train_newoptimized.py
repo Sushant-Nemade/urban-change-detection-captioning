@@ -1878,7 +1878,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Remote_Sensing_Image_Change_Interpretation')
 
     # Data
-    parser.add_argument('--data_folder', default=r'C:\Users\nemade\Downloads\LEVIR-MCI-data\LEVIR-MCI-dataset\images')
+    parser.add_argument('--data_folder', default=r'C:\Users\nemade\Downloads\LEVIR-MCI-data\LEVIR-MCI-dataset\images', help='folder with data files')
     parser.add_argument('--list_path', default='./data/LEVIR_MCI/')
     parser.add_argument('--token_folder', default='./data/LEVIR_MCI/tokens/')
     parser.add_argument('--vocab_file', default='vocab')
