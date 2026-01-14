@@ -70,10 +70,3 @@ These are not required for core training/inference:
 - Dataset augmentation (`augment_dataset_new.py`, `azure_diagnostic.py`): `Multi_change\requirements-augmentation.txt`
 - Experimental lagent demo (`web_demo.py`, `try_chat.py`): `Multi_change\requirements-agent.txt`
 
-### Local-only (not uploaded)
-
-Some experimental files are kept untracked on purpose (ignored via `.gitignore`) and will not appear in the remote repository, including:
-
-- `MasterThesis-ChangeAgent/Multi_change/agent_web_demo.py`
-- `MasterThesis-ChangeAgent/Multi_change/local_predictor.py`
-
