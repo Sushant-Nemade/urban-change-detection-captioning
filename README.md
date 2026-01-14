@@ -43,6 +43,11 @@ Place SegFormer weights under:
 
 At least `mit_b1.pth` is required for the default backbone.
 
+### 3b) Dataset and trained model (Hugging Face)
+
+- LEVIR-MCI-Augmented dataset: https://huggingface.co/datasets/sushantnemade/LEVIR-MCI-augmented
+- Trained model checkpoint: https://huggingface.co/sushantnemade/MCI_augmented
+
 ### 4) Run the Streamlit demo
 
 ```powershell

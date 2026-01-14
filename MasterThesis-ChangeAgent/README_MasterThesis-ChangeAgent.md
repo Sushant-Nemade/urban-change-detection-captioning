@@ -44,17 +44,6 @@ Notes:
 	- `Multi_change/requirements-augmentation.txt` for dataset augmentation scripts (Azure/OpenAI)
 	- `Multi_change/requirements-agent.txt` for the experimental `web_demo.py` (lagent-based)
 
-Script → requirements mapping:
-
-- Inference/training/eval (`streamlit_app.py`, `train_*.py`, `test_*.py`, `eval_many.py`): `Multi_change/requirements.txt`
-- Dataset augmentation (`augment_dataset_new.py`, `azure_diagnostic.py`): `Multi_change/requirements-augmentation.txt`
-- Experimental agent demo (`web_demo.py`, `try_chat.py`): `Multi_change/requirements-agent.txt`
-
-Local-only experiments (not pushed to the remote repo):
-
-- `Multi_change/agent_web_demo.py`
-- `Multi_change/local_predictor.py`
-
 #### Run the Streamlit demo (Multi_change)
 
 ```bash
@@ -90,6 +79,11 @@ Multi_change/model/pretrained/mit_b2.pth   # if used
 ```
 
 ## Data Preparation
+
+References:
+
+- LEVIR-MCI-Augmented dataset (Hugging Face): https://huggingface.co/datasets/sushantnemade/LEVIR-MCI-augmented
+- Trained model checkpoint (Hugging Face): https://huggingface.co/sushantnemade/MCI_augmented
 
 Expected LEVIR-MCI layout (adapt `DATA_PATH_ROOT` accordingly):
 
