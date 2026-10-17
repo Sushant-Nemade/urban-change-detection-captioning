@@ -1,0 +1,26 @@
+{
+  "model": {
+    "filename": "MCI_model_augmented.pth",
+    "url": "https://huggingface.co/sushantnemade/MCI_augmented/resolve/330a2385435db812bff4c0a85ed3e4c1455fbb45/MCI_model_augmented.pth",
+    "sha256": "5ca0b07c82d633a37e98d0a001247fb0283976209eb6c50cd56afdf33796ee46",
+    "bytes": 522409063
+  },
+  "backbone": {
+    "filename": "mit_b1.pth",
+    "url": "https://raw.githubusercontent.com/Chen-Yang-Liu/Change-Agent/68cbaa7f388b36e4fc10872f7a2911482d26ae5b/Multi_change/model/pretrained/mit_b1.pth",
+    "sha256": "26f8b1a980ad08ddda46f82ba5008b2f6322f11939d59313285c4b477bfe60b1",
+    "bytes": 54683828
+  },
+  "dataset-augmented": {
+    "filename": "LEVIR-MCI-augmented_dataset.zip",
+    "url": "https://huggingface.co/datasets/sushantnemade/LEVIR-MCI-augmented/resolve/3844bd00748c4d79af90e7a002f919b0dd20bb13/LEVIR-MCI-augmented_dataset.zip",
+    "sha256": "eebea05866266496742fc31ad63327237e812cda8b3fdd1720123c839d1701c9",
+    "bytes": 4212576803
+  },
+  "dataset-original": {
+    "filename": "LEVIR-MCI-dataset.zip",
+    "url": "https://huggingface.co/datasets/sushantnemade/LEVIR-MCI-augmented/resolve/3844bd00748c4d79af90e7a002f919b0dd20bb13/LEVIR-MCI-dataset.zip",
+    "sha256": "8f7d52298fa3ca32aec983e84addef80f61ad7d981c0ff97a92c5880c4b83e9d",
+    "bytes": 2771943190
+  }
+}

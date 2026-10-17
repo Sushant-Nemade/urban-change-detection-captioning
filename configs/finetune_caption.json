@@ -1,0 +1,15 @@
+{
+  "images": "data/raw/levir_mci/images",
+  "metadata": "data/processed/levir_mci",
+  "output": "runs/s2-caption",
+  "stage": "s2",
+  "goal": "caption",
+  "checkpoint": "runs/s1-joint/best.pth",
+  "epochs": 10,
+  "batch_size": 8,
+  "accumulation_steps": 8,
+  "unfreeze_caption_neck": true,
+  "beam_size": 3,
+  "seed": 42,
+  "model": {"max_length": 46, "dropout": 0.1}
+}

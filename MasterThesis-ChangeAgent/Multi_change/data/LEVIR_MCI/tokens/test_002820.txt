@@ -1,1 +1,0 @@
-[["<START>", "small", "holes", "and", "trails", "emerge", "in", "the", "wasteland", "<END>"], ["<START>", "the", "paths", "and", "holes", "reappear", "in", "the", "grass", "<END>"], ["<START>", "some", "tracks", "appear", "<END>"], ["<START>", "a", "straight", "road", "is", "removed", "<END>"], ["<START>", "a", "road", "and", "some", "trees", "have", "been", "added", "<END>"]]

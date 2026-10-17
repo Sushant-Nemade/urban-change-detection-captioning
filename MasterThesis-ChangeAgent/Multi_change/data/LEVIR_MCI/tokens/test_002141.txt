@@ -1,1 +1,0 @@
-[["<START>", "some", "plants", "have", "been", "added", "<END>"], ["<START>", "the", "woods", "become", "denser", "<END>"], ["<START>", "some", "vegetation", "has", "been", "added", "<END>"], ["<START>", "the", "number", "of", "trees", "increases", "significantly", "<END>"], ["<START>", "most", "of", "the", "plants", "have", "been", "added", "<END>"]]

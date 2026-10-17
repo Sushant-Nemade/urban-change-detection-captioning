@@ -1,0 +1,171 @@
+{
+  "validated_at_utc": "2026-10-17T00:40:30.428941+00:00",
+  "workflow": "CPU development, packaged inference, training smoke checks, and services",
+  "runtime": {
+    "python": "3.12.14",
+    "torch": "2.14.1+cpu",
+    "torchvision": "0.29.1+cpu",
+    "pillow": "12.3.0",
+    "streamlit": "1.66.0"
+  },
+  "pytest": {
+    "tests": 31,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 31,
+    "integration_tests_executed": 5
+  },
+  "legacy_regression": {
+    "reference": "Captured original implementation with pretrained backbone and untrained task heads",
+    "max_absolute_error": {
+      "f1": 3.814697265625e-06,
+      "f2": 3.7550926208496094e-06,
+      "seg": 6.854534149169922e-07
+    },
+    "beam_sequence": "identical",
+    "relative_tolerance": 1e-05,
+    "absolute_tolerance": 1e-05
+  },
+  "trained_checkpoint_sha256": "5ca0b07c82d633a37e98d0a001247fb0283976209eb6c50cd56afdf33796ee46",
+  "qualitative_predictions": [
+    {
+      "sample": "test_000004",
+      "direction": "chronological",
+      "caption": "the woods disappear and a t-shaped road is built with villas built along"
+    },
+    {
+      "sample": "test_000004",
+      "direction": "reversed",
+      "caption": "trees are added , and a road with villas along it is removed"
+    },
+    {
+      "sample": "test_000017",
+      "direction": "chronological",
+      "caption": "trees are removed and a residential area has been built with rows of villas built along"
+    },
+    {
+      "sample": "test_000017",
+      "direction": "reversed",
+      "caption": "many houses are removed along the road"
+    }
+  ],
+  "live_services": {
+    "streamlit_http": "passed",
+    "streamlit_actual_model_load": "passed",
+    "api_liveness_readiness_and_trained_prediction": "passed",
+    "checkpoint_sha256": "5ca0b07c82d633a37e98d0a001247fb0283976209eb6c50cd56afdf33796ee46",
+    "caption": "the woods are removed and a t-shaped road is built with villas built along"
+  },
+  "training_checks": [
+    "Joint optimization with both losses and vocabulary transplantation",
+    "Partial accumulation window performs an optimizer step",
+    "Caption fine-tuning and epoch resume with optimizer/scaler/RNG state",
+    "Training/evaluation freeze states are restored correctly"
+  ],
+  "package_checks": {
+    "sdist_build": "passed",
+    "wheel_build": "passed",
+    "fresh_wheel_install_and_inference": "passed",
+    "vocabularies_and_component_licenses_in_wheel": "passed",
+    "protected_repository_artifacts": "No tracked weights, PDFs, JARs, full datasets, generated token collections, or credentials; small attributed example images are intentional"
+  },
+  "dependency_advisories": {
+    "source": "PyPI version metadata",
+    "packages_checked": 73,
+    "active_advisories": [],
+    "unavailable": [],
+    "scope": "Known advisories reported by PyPI for locked versions; not a complete security audit"
+  },
+  "current_tree_scan": {
+    "selected_credential_patterns": "no findings",
+    "relative_markdown_links": "passed",
+    "scope": "Pattern scan, not a complete security audit"
+  },
+  "history_pattern_scan": {
+    "scope": "reachable local Git blobs <=2 MiB, excluding binary data",
+    "shallow_repository": false,
+    "text_blobs_scanned": 10243,
+    "blobs_skipped": 28,
+    "findings_without_values": [],
+    "limitation": "Pattern scan, not a complete credential or redistribution-rights audit"
+  },
+  "archive_inspection": {
+    "LEVIR-MCI-dataset.zip": {
+      "archive_bytes": 2771943190,
+      "members": 40329,
+      "image_counts": {
+        "train": 6815,
+        "val": 1333,
+        "test": 1929
+      },
+      "caption_files": [
+        "LevirCCcaptions.json"
+      ],
+      "annotations": [
+        {
+          "file": "LevirCCcaptions.json",
+          "samples": 10077,
+          "splits": {
+            "train": 6815,
+            "val": 1333,
+            "test": 1929
+          },
+          "caption_counts": [
+            5
+          ],
+          "explicit_reversal_provenance": 0,
+          "unique_imgids": 10077
+        }
+      ],
+      "extracted_test_samples": [
+        "test_000004.png",
+        "test_000017.png"
+      ],
+      "range_bytes_read": 6943407,
+      "verification": "HTTPS ranges and ZIP member CRC; complete archive SHA256 not verified from partial reads"
+    },
+    "LEVIR-MCI-augmented_dataset.zip": {
+      "archive_bytes": 4212576803,
+      "members": 60481,
+      "image_counts": {
+        "train": 10222,
+        "val": 2000,
+        "test": 2893
+      },
+      "caption_files": [
+        "LEVIRCCcaptions_fully_cleaned.json"
+      ],
+      "annotations": [
+        {
+          "file": "LEVIRCCcaptions_fully_cleaned.json",
+          "samples": 15115,
+          "splits": {
+            "train": 10222,
+            "val": 2000,
+            "test": 2893
+          },
+          "caption_counts": [
+            5
+          ],
+          "explicit_reversal_provenance": 0,
+          "unique_imgids": 15115
+        }
+      ],
+      "range_bytes_read": 10393267,
+      "verification": "HTTPS ranges and ZIP member CRC; complete archive SHA256 not verified from partial reads"
+    }
+  },
+  "original_tracked_source_bytes": 286455643,
+  "unrun_checks": [
+    "Full dataset accuracy benchmark",
+    "GPU training and mixed precision",
+    "Optional Java METEOR"
+  ],
+  "external_actions": {
+    "github_rename": "Denied: 403 Resource not accessible by integration; owner action required",
+    "huggingface_card_upload": "Local drafts only; write authentication and license review required",
+    "removal_case_montage": "Not supplied to cloud workspace",
+    "visibility": "GitHub private; both linked Hugging Face repositories report public; visibility unchanged"
+  }
+}

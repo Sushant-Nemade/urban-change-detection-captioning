@@ -1,0 +1,16 @@
+{
+  "images": "data/raw/levir_mci/images",
+  "metadata": "data/processed/levir_mci",
+  "output": "runs/s1-joint",
+  "stage": "s1",
+  "goal": "joint",
+  "backbone_weights": "artifacts/backbones/mit_b1.pth",
+  "epochs": 30,
+  "batch_size": 8,
+  "accumulation_steps": 8,
+  "encoder_lr": 0.0001,
+  "decoder_lr": 0.0002,
+  "beam_size": 1,
+  "seed": 42,
+  "model": {"max_length": 46, "dropout": 0.1}
+}
