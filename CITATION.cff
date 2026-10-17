@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "Please cite this software and the foundational Change-Agent / LEVIR-MCI paper."
+type: software
+title: "Urban Change Detection & Change Captioning"
+authors:
+  - family-names: Nemade
+    given-names: Sushant
+version: 0.1.0
+repository-code: "https://github.com/Sushant-Nemade/ChangeDetection-ChangeCaptioning"
+references:
+  - type: article
+    title: "Change-Agent: Toward Interactive Comprehensive Remote Sensing Change Interpretation and Analysis"
+    authors:
+      - family-names: Liu
+        given-names: Chenyang
+      - family-names: Chen
+        given-names: Keyan
+      - family-names: Zhang
+        given-names: Haotian
+      - family-names: Qi
+        given-names: Zipeng
+      - family-names: Zou
+        given-names: Zhengxia
+      - family-names: Shi
+        given-names: Zhenwei
+    year: 2024
+    doi: 10.1109/TGRS.2024.3425815
+    journal: IEEE Transactions on Geoscience and Remote Sensing

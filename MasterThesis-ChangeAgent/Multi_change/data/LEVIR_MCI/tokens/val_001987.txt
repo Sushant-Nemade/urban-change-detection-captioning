@@ -1,1 +1,0 @@
-[["<START>", "an", "area", "of", "wasteland", "transforms", "into", "lush", "vegetation", "<END>"], ["<START>", "most", "trees", "in", "the", "forest", "have", "been", "restored", "<END>"], ["<START>", "the", "forest", "reappears", "<END>"], ["<START>", "all", "the", "trees", "have", "reappeared", "<END>"], ["<START>", "the", "woods", "reappear", "<END>"]]

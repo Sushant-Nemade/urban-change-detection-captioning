@@ -1,1 +1,0 @@
-[["<START>", "vegetation", "flourishes", "and", "becomes", "denser", "<END>"], ["<START>", "grass", "has", "reappeared", ",", "and", "several", "trees", "have", "been", "added", "<END>"], ["<START>", "fewer", "trees", "remain", "<END>"], ["<START>", "the", "trees", "have", "grown", "new", "leaves", "<END>"], ["<START>", "many", "plants", "have", "been", "added", "<END>"]]

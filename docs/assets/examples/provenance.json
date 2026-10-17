@@ -1,0 +1,48 @@
+{
+  "dataset": "sushantnemade/LEVIR-MCI-augmented",
+  "revision": "3844bd00748c4d79af90e7a002f919b0dd20bb13",
+  "archive": "LEVIR-MCI-dataset.zip",
+  "sample_split": "test",
+  "inputs": "Unchanged PNG bytes read via verified HTTPS ranges; ZIP member CRC validated. Full archive SHA-256 not verified from partial reads.",
+  "model_sha256": "5ca0b07c82d633a37e98d0a001247fb0283976209eb6c50cd56afdf33796ee46",
+  "beam_size": 5,
+  "generated_masks": "Model predictions, not ground-truth labels",
+  "files": [
+    {
+      "path": "docs/assets/examples/test_000004/earlier.png",
+      "sha256": "e6c872f25e7c8810f76ecb19db16ebed011acfb5fc5e0ac015eb644e42513589"
+    },
+    {
+      "path": "docs/assets/examples/test_000004/later.png",
+      "sha256": "25ef46e7191661be0cc4c9e97e3eaaf84eced1d823fc5322b3a2d8ae6056c70e"
+    },
+    {
+      "path": "docs/assets/examples/test_000004/mask-chronological.png",
+      "sha256": "0588c75ed249c90566dde5464bc73a85848026d02f9df7df46776ad06c9b1a6f"
+    },
+    {
+      "path": "docs/assets/examples/test_000004/mask-reversed.png",
+      "sha256": "b3c1ae131550339061fb14f5a476eb6618f3ef175807697ca6049132b93c2749"
+    },
+    {
+      "path": "docs/assets/examples/test_000017/earlier.png",
+      "sha256": "129453538218b7bc60b8a54fdc878889a567177a1a80ff204c5d387b7a9ff43a"
+    },
+    {
+      "path": "docs/assets/examples/test_000017/later.png",
+      "sha256": "f55494b4d3b1c033903a78caca8240ce9540d6aaf2540fb8ecff82a10e20a78c"
+    },
+    {
+      "path": "docs/assets/examples/test_000017/mask-chronological.png",
+      "sha256": "b60e8416fd6811c1304ad41c35d4bef1e37fccac208f90b8f075f8f9986b0622"
+    },
+    {
+      "path": "docs/assets/examples/test_000017/mask-reversed.png",
+      "sha256": "e7a978935014a82427faf6e837084ca0de318bd4f09deca7fc274703325f0aef"
+    }
+  ],
+  "runtime": {
+    "python": "3.12.14",
+    "torch": "2.14.1+cpu"
+  }
+}
