@@ -49,4 +49,6 @@
 
 The source reorganization, workflow fixes, documentation/cards, numerical regression, full-model CPU inference, training/resume checks, distribution build, and fresh-wheel validation are implemented. The trained checkpoint is now downloaded and verified; real chronological/reversed pairs and live HTTP inference have run. ZIP metadata and caption JSON were inspected for both hosted archives.
 
+The source changes are merged into `main` through [PR #1](https://github.com/Sushant-Nemade/ChangeDetection-ChangeCaptioning/pull/1). The pull request passed CI on Python 3.11 and 3.12. The default checkout now contains the reorganized project; no review-branch adoption is required for new tasks.
+
 The remote GitHub rename is blocked by an integration administration-permission denial. Hugging Face write authentication is absent. The author’s local removal-case montage, licensing decision, full benchmark, and GPU validation remain outside the completed source changes. See the final validation report and publication notes for the exact evidence and pending owner actions.
