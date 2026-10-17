@@ -37,7 +37,7 @@ The project adapts the dual-head MCI model from [Change-Agent](https://github.co
 Use Python **3.11–3.12**. The tested cloud environment uses Python 3.12 and PyTorch 2.14 on CPU. A CUDA GPU is recommended for training.
 
 ```bash
-git clone https://github.com/Sushant-Nemade/ChangeDetection-ChangeCaptioning.git urban-change-detection-captioning
+git clone https://github.com/Sushant-Nemade/urban-change-detection-captioning.git
 cd urban-change-detection-captioning
 python -m venv .venv
 source .venv/bin/activate

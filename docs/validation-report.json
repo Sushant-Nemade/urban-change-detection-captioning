@@ -163,9 +163,9 @@
     "Optional Java METEOR"
   ],
   "external_actions": {
-    "github_rename": "Denied: 403 Resource not accessible by integration; owner action required",
+    "github_rename": "Completed by owner; Sushant-Nemade/urban-change-detection-captioning verified through the GitHub API",
     "huggingface_card_upload": "Local drafts only; write authentication and license review required",
     "removal_case_montage": "Not supplied to cloud workspace",
-    "visibility": "GitHub private; both linked Hugging Face repositories report public; visibility unchanged"
+    "visibility": "GitHub public, changed by owner and verified through the GitHub API; both linked Hugging Face repositories report public"
   }
 }

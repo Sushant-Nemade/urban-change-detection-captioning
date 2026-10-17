@@ -6,7 +6,7 @@ authors:
   - family-names: Nemade
     given-names: Sushant
 version: 0.1.0
-repository-code: "https://github.com/Sushant-Nemade/ChangeDetection-ChangeCaptioning"
+repository-code: "https://github.com/Sushant-Nemade/urban-change-detection-captioning"
 references:
   - type: article
     title: "Change-Agent: Toward Interactive Comprehensive Remote Sensing Change Interpretation and Analysis"

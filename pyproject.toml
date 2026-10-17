@@ -32,7 +32,7 @@ dev = ["pytest>=9.1.1,<10", "httpx>=0.28,<1", "ruff>=0.11,<1", "build>=1.2,<2"]
 urban-change = "urban_change.cli:main"
 
 [project.urls]
-Repository = "https://github.com/Sushant-Nemade/ChangeDetection-ChangeCaptioning"
+Repository = "https://github.com/Sushant-Nemade/urban-change-detection-captioning"
 Model = "https://huggingface.co/sushantnemade/MCI_augmented"
 Dataset = "https://huggingface.co/datasets/sushantnemade/LEVIR-MCI-augmented"
 

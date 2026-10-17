@@ -18,7 +18,7 @@ This repository hosts LEVIR-MCI artifacts and an augmented archive published by 
 
 The original imagery, masks, and captions originate from **LEVIR-MCI / Change-Agent** by Liu et al. This is an extension of that dataset, not a newly collected independent imagery source.
 
-Project code: [urban-change-detection-captioning](https://github.com/Sushant-Nemade/ChangeDetection-ChangeCaptioning). Related checkpoint: [sushantnemade/MCI_augmented](https://huggingface.co/sushantnemade/MCI_augmented).
+Project code: [urban-change-detection-captioning](https://github.com/Sushant-Nemade/urban-change-detection-captioning). Related checkpoint: [sushantnemade/MCI_augmented](https://huggingface.co/sushantnemade/MCI_augmented).
 
 ## Files and identity
 

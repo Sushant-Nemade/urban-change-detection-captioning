@@ -15,7 +15,7 @@ datasets:
 
 This repository contains the augmented MCI checkpoint published by **Sushant Nemade**, for joint urban change detection and captioning from an ordered pair of satellite images. The model architecture is adapted from [Change-Agent](https://github.com/Chen-Yang-Liu/Change-Agent), rather than introduced as an original architecture here.
 
-Code and documentation: [urban-change-detection-captioning](https://github.com/Sushant-Nemade/ChangeDetection-ChangeCaptioning).
+Code and documentation: [urban-change-detection-captioning](https://github.com/Sushant-Nemade/urban-change-detection-captioning).
 
 ## Inputs and outputs
 
@@ -69,7 +69,7 @@ Research on aligned urban remote-sensing image pairs and joint change interpreta
 
 The existing Hub metadata declares Apache-2.0. However, the inherited SegFormer implementation and pretrained backbone originate from NVIDIA’s source license with a non-commercial-use limitation. The compatibility of a blanket Apache-2.0 declaration with those upstream components has not been established. This draft intentionally makes no new blanket license declaration. Resolve the scope and update Hub metadata consistently before publishing this replacement card as a final release.
 
-Preserve [upstream notices](https://github.com/Sushant-Nemade/ChangeDetection-ChangeCaptioning/blob/main/THIRD_PARTY_NOTICES.md) and the [NVIDIA SegFormer license](https://github.com/NVlabs/SegFormer/blob/65fa8cfa9b52b6ee7e8897a98705abf8570f9e32/LICENSE).
+Preserve [upstream notices](https://github.com/Sushant-Nemade/urban-change-detection-captioning/blob/main/THIRD_PARTY_NOTICES.md) and the [NVIDIA SegFormer license](https://github.com/NVlabs/SegFormer/blob/65fa8cfa9b52b6ee7e8897a98705abf8570f9e32/LICENSE).
 
 ## Citation
 
