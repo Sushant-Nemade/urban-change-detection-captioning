@@ -9,11 +9,11 @@
     "streamlit": "1.66.0"
   },
   "pytest": {
-    "tests": 31,
+    "tests": 35,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
-    "passed": 31,
+    "passed": 35,
     "integration_tests_executed": 5
   },
   "legacy_regression": {
@@ -157,6 +157,21 @@
     }
   },
   "original_tracked_source_bytes": 286455643,
+  "provenance_and_directional_audits": {
+    "provenance_audit_report": "docs/provenance_audit_report.json",
+    "original_captions_sha256": "8c8c3f494867b796306b98713e16ff72cbae1cf4a0a0c36931da16af9602daed",
+    "augmented_captions_sha256": "cefb1699b228c95f45095b5f78edd879519e69d5034337c80fa7c0c006ca50d3",
+    "overall_family_manifest_sha256": "0f7e8424137f6c5d5858d362d539ed9e5a857fe60093628d5e3f161422fc325f",
+    "mapped_reversal_pairs": 5038,
+    "cross_split_leakage_count": 0,
+    "zero_cross_split_leakage_verified": true,
+    "directional_eval_report": "docs/directional_eval_report.json",
+    "mask_symmetry_miou_corpus": 0.976719,
+    "mask_pixel_agreement_rate": 0.990326,
+    "caption_polarity_inversion_rate": 1.0,
+    "forward_addition_bias_rate": 0.0,
+    "visual_audit_renderer": "src/urban_change/visual_audit.py (and src/visual_audit.py)"
+  },
   "unrun_checks": [
     "Full dataset accuracy benchmark",
     "GPU training and mixed precision",

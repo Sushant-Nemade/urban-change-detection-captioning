@@ -138,7 +138,7 @@ def dispatch(args):
         predictor = ChangePredictor(args.checkpoint, args.vocab, args.device)
         with Image.open(args.image_a) as a, Image.open(args.image_b) as b:
             prediction = predictor.predict(a, b, args.beam_size, args.mask_size)
-        save_prediction(prediction, args.output, args.overwrite)
+            save_prediction(prediction, args.output, args.overwrite, image_a=a, image_b=b)
         return prediction.metadata()
     if args.command == "prepare":
         from urban_change.data.prepare import prepare_metadata

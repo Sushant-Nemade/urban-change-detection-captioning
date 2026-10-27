@@ -30,8 +30,12 @@ jobs:
           MKL_NUM_THREADS: "2"
       - name: Check formatting and imports
         run: |
-          ruff check src tests apps scripts
-          ruff format --check src tests apps scripts
+          ruff check src tests apps scripts tools
+          ruff format --check src tests apps scripts tools
+      - name: Verify split-family provenance and directional evaluation reports
+        run: |
+          python tools/audit_split_provenance.py --check
+          python tools/evaluate_directional_consistency.py --check
       - name: Check release source tree
         run: python scripts/check_release.py
       - name: Build distributions

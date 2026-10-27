@@ -1,0 +1,197 @@
+{
+  "schema_version": "1.0.0",
+  "report_type": "directional_bias_and_mask_symmetry_evaluation",
+  "evaluation_mode": "checksum_verified_committed_predictions",
+  "checkpoint_sha256": "5ca0b07c82d633a37e98d0a001247fb0283976209eb6c50cd56afdf33796ee46",
+  "paired_samples_evaluated": 2,
+  "total_directional_inferences": 4,
+  "metrics": {
+    "mask_symmetry_miou_corpus": 0.976719,
+    "mask_symmetry_miou_macro_avg": 0.976563,
+    "binary_change_symmetry_iou_macro_avg": 0.970307,
+    "mask_pixel_agreement_rate": 0.990326,
+    "mask_class_symmetry_iou": {
+      "unchanged_0": 0.985889,
+      "road_1": 0.977349,
+      "building_2": 0.96692
+    },
+    "caption_polarity_inversion_rate": 1.0,
+    "forward_addition_bias_rate": 0.0
+  },
+  "per_sample_traces": [
+    {
+      "sample_id": "test_000004",
+      "family_id": "FAM-test-test_000004",
+      "reversed_partner_id": "test_002136.png",
+      "input_t1_sha256": "e6c872f25e7c8810f76ecb19db16ebed011acfb5fc5e0ac015eb644e42513589",
+      "input_t2_sha256": "25ef46e7191661be0cc4c9e97e3eaaf84eced1d823fc5322b3a2d8ae6056c70e",
+      "forward_mask_sha256": "0588c75ed249c90566dde5464bc73a85848026d02f9df7df46776ad06c9b1a6f",
+      "reversed_mask_sha256": "b3c1ae131550339061fb14f5a476eb6618f3ef175807697ca6049132b93c2749",
+      "forward_prediction": {
+        "direction": "T1 -> T2 (chronological)",
+        "caption": "the woods disappear and a t-shaped road is built with villas built along",
+        "area_percentages": {
+          "unchanged_pct": 70.5109,
+          "road_change_pct": 11.0626,
+          "building_change_pct": 18.4265,
+          "total_changed_pct": 29.4891
+        },
+        "bounding_boxes_count": 13
+      },
+      "reversed_prediction": {
+        "direction": "T2 -> T1 (reversed)",
+        "caption": "trees are added , and a road with villas along it is removed",
+        "area_percentages": {
+          "unchanged_pct": 70.7062,
+          "road_change_pct": 11.0336,
+          "building_change_pct": 18.2602,
+          "total_changed_pct": 29.2938
+        },
+        "bounding_boxes_count": 13
+      },
+      "mask_symmetry": {
+        "pixel_agreement_rate": 0.99115,
+        "mean_symmetry_iou": 0.977169,
+        "binary_change_symmetry_iou": 0.970436,
+        "class_symmetry_iou": {
+          "unchanged_0": 0.987587,
+          "road_1": 0.978819,
+          "building_2": 0.9651
+        },
+        "confusion_matrix_fwd_vs_rev": [
+          [
+            45985,
+            66,
+            159
+          ],
+          [
+            87,
+            7163,
+            0
+          ],
+          [
+            266,
+            2,
+            11808
+          ]
+        ]
+      },
+      "caption_polarity": {
+        "forward_polarity": {
+          "urban_polarity": "urban_addition",
+          "addition_cues": [
+            "built"
+          ],
+          "removal_cues": [
+            "disappear"
+          ],
+          "urban_addition_clauses": 1,
+          "urban_removal_clauses": 0
+        },
+        "reversed_polarity": {
+          "urban_polarity": "urban_removal",
+          "addition_cues": [
+            "added"
+          ],
+          "removal_cues": [
+            "removed"
+          ],
+          "urban_addition_clauses": 0,
+          "urban_removal_clauses": 1
+        },
+        "polarity_inverted_correctly": true,
+        "exhibits_forward_addition_bias": false
+      }
+    },
+    {
+      "sample_id": "test_000017",
+      "family_id": "FAM-test-test_000017",
+      "reversed_partner_id": "test_002137.png",
+      "input_t1_sha256": "129453538218b7bc60b8a54fdc878889a567177a1a80ff204c5d387b7a9ff43a",
+      "input_t2_sha256": "f55494b4d3b1c033903a78caca8240ce9540d6aaf2540fb8ecff82a10e20a78c",
+      "forward_mask_sha256": "b60e8416fd6811c1304ad41c35d4bef1e37fccac208f90b8f075f8f9986b0622",
+      "reversed_mask_sha256": "e7a978935014a82427faf6e837084ca0de318bd4f09deca7fc274703325f0aef",
+      "forward_prediction": {
+        "direction": "T1 -> T2 (chronological)",
+        "caption": "trees are removed and a residential area has been built with rows of villas built along",
+        "area_percentages": {
+          "unchanged_pct": 65.2679,
+          "road_change_pct": 9.1965,
+          "building_change_pct": 25.5356,
+          "total_changed_pct": 34.7321
+        },
+        "bounding_boxes_count": 20
+      },
+      "reversed_prediction": {
+        "direction": "T2 -> T1 (reversed)",
+        "caption": "many houses are removed along the road",
+        "area_percentages": {
+          "unchanged_pct": 65.3778,
+          "road_change_pct": 9.201,
+          "building_change_pct": 25.4211,
+          "total_changed_pct": 34.6222
+        },
+        "bounding_boxes_count": 20
+      },
+      "mask_symmetry": {
+        "pixel_agreement_rate": 0.989502,
+        "mean_symmetry_iou": 0.975958,
+        "binary_change_symmetry_iou": 0.970178,
+        "class_symmetry_iou": {
+          "unchanged_0": 0.984057,
+          "road_1": 0.975586,
+          "building_2": 0.968232
+        },
+        "confusion_matrix_fwd_vs_rev": [
+          [
+            42466,
+            76,
+            232
+          ],
+          [
+            73,
+            5954,
+            0
+          ],
+          [
+            307,
+            0,
+            16428
+          ]
+        ]
+      },
+      "caption_polarity": {
+        "forward_polarity": {
+          "urban_polarity": "urban_addition",
+          "addition_cues": [
+            "built"
+          ],
+          "removal_cues": [
+            "removed"
+          ],
+          "urban_addition_clauses": 1,
+          "urban_removal_clauses": 0
+        },
+        "reversed_polarity": {
+          "urban_polarity": "urban_removal",
+          "addition_cues": [],
+          "removal_cues": [
+            "removed"
+          ],
+          "urban_addition_clauses": 0,
+          "urban_removal_clauses": 1
+        },
+        "polarity_inverted_correctly": true,
+        "exhibits_forward_addition_bias": false
+      }
+    }
+  ],
+  "provenance": {
+    "dataset_repository": "sushantnemade/LEVIR-MCI-augmented",
+    "dataset_revision": "3844bd00748c4d79af90e7a002f919b0dd20bb13",
+    "source_archive": "LEVIR-MCI-dataset.zip",
+    "sample_split": "test",
+    "beam_size": 5,
+    "scope_boundary": "Evaluated on the 2 checksum-verified real LEVIR-MCI test pairs (4 directional inferences: test_000004 A->B & B->A, test_000017 A->B & B->A) committed in docs/assets/examples/. Full 964-pair test-split directional evaluation requires downloading the 4.21 GB archive and 522 MB checkpoint via --images and --checkpoint."
+  }
+}

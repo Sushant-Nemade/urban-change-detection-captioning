@@ -1,0 +1,284 @@
+{
+  "schema_version": "1.0.0",
+  "audit_type": "split_family_provenance_and_leakage_audit",
+  "manifests": {
+    "original_captions_sha256": "8c8c3f494867b796306b98713e16ff72cbae1cf4a0a0c36931da16af9602daed",
+    "augmented_captions_sha256": "cefb1699b228c95f45095b5f78edd879519e69d5034337c80fa7c0c006ca50d3",
+    "original_total_entries": 10077,
+    "augmented_total_entries": 15115,
+    "total_reversed_entries": 5038
+  },
+  "zero_leakage_verification": {
+    "zero_cross_split_leakage_verified": true,
+    "cross_split_leakage_count": 0,
+    "unmapped_reversal_count": 0,
+    "mapped_reversal_count": 5038,
+    "all_changed_pairs_bijectively_mapped": true,
+    "pairwise_family_intersections": {
+      "train_val": 0,
+      "train_test": 0,
+      "val_test": 0
+    },
+    "cross_split_leak_details": [],
+    "unmapped_reversal_details": []
+  },
+  "overall_family_manifest_sha256": "8c651adb153c0d913e65927d24c811a1fc12d5f554f5d15ad4f52ce65acac502",
+  "splits": {
+    "train": {
+      "unique_scene_families": 6815,
+      "original_pairs": 6815,
+      "original_changed_pairs": 3407,
+      "original_unchanged_pairs": 3408,
+      "reversed_pairs": 3407,
+      "total_augmented_archive_entries": 10222,
+      "changed_reversal_coverage_rate": 1.0,
+      "family_manifest_sha256": "e8d91b66e9409310a014d761f6b2515bfa9863d341e7f80a5e9faabe0391bcc6"
+    },
+    "val": {
+      "unique_scene_families": 1333,
+      "original_pairs": 1333,
+      "original_changed_pairs": 667,
+      "original_unchanged_pairs": 666,
+      "reversed_pairs": 667,
+      "total_augmented_archive_entries": 2000,
+      "changed_reversal_coverage_rate": 1.0,
+      "family_manifest_sha256": "9ebe2a8c8539ad7d0da402de526179864069b7612f2483a08bf1e9a9b14fe970"
+    },
+    "test": {
+      "unique_scene_families": 1929,
+      "original_pairs": 1929,
+      "original_changed_pairs": 964,
+      "original_unchanged_pairs": 965,
+      "reversed_pairs": 964,
+      "total_augmented_archive_entries": 2893,
+      "changed_reversal_coverage_rate": 1.0,
+      "family_manifest_sha256": "000a4fdccfe2215a92a3da894f1661896607f84f5d4421742452f5566ebc9bd1"
+    }
+  },
+  "deterministic_partition_policies": {
+    "train_only_augmentation": {
+      "description": "Strict train-only augmentation: reversed pairs are permitted only in train; val and test contain strictly original chronological (T1, T2) pairs.",
+      "counts": {
+        "train": 10222,
+        "val": 1333,
+        "test": 1929
+      },
+      "split_sha256": {
+        "train": "17b0352e3f33b4938e1c8f669158cffb7ef080538e5da4b9ac8de8b4f3a0ef58",
+        "val": "1bd72ab9e6b32465d3b41af9304fb823769dcdabdcd8b4a431018a09d315cb67",
+        "test": "2fd6467e7db449cfe70c0abc15b2869573e4a9934508431599a7c8a90066b398"
+      }
+    },
+    "paired_evaluation_splits": {
+      "description": "Paired directional evaluation: every scene family remains strictly inside its assigned split, with chronological (T1, T2) and reversed (T2, T1) slices tracked separately for directional symmetry and polarity evaluation.",
+      "counts": {
+        "train": {
+          "chronological": 6815,
+          "reversed": 3407,
+          "combined": 10222
+        },
+        "val": {
+          "chronological": 1333,
+          "reversed": 667,
+          "combined": 2000
+        },
+        "test": {
+          "chronological": 1929,
+          "reversed": 964,
+          "combined": 2893
+        }
+      },
+      "slice_sha256": {
+        "train": {
+          "chronological": "9a4db288dbe3153eca640d8ca7a4777979d7b156386687e004719b09059252bb",
+          "reversed": "26d4403d779ec316f6eb95890bdb1b69fbc3f9827218e8e8af1b7e0fcb644485",
+          "combined": "17b0352e3f33b4938e1c8f669158cffb7ef080538e5da4b9ac8de8b4f3a0ef58"
+        },
+        "val": {
+          "chronological": "1bd72ab9e6b32465d3b41af9304fb823769dcdabdcd8b4a431018a09d315cb67",
+          "reversed": "3f21cc31fad0a590f8fc2af7d3619bae639d3a80dd8ad288db9deb94143f460d",
+          "combined": "675e95c95f60aa847ed0ba5c7fd4989f95c9b91e7fc90f04d34448b57d001682"
+        },
+        "test": {
+          "chronological": "2fd6467e7db449cfe70c0abc15b2869573e4a9934508431599a7c8a90066b398",
+          "reversed": "33cef0c9370768ece97f9d98481e8e7726c9a1e2ca4b46e87c739675b0ca9556",
+          "combined": "d81649dc6d50176ff0a74d8826cd09551f651240ed13801ecbf2b205c3d938fa"
+        }
+      }
+    }
+  },
+  "sample_bijective_mappings": {
+    "train": [
+      {
+        "family_id": "FAM-train-train_000010",
+        "source_filename": "train_000010.png",
+        "source_imgid": 8,
+        "reversed_filename": "train_007591.png",
+        "reversed_imgid": 10077,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      },
+      {
+        "family_id": "FAM-train-train_000013",
+        "source_filename": "train_000013.png",
+        "source_imgid": 11,
+        "reversed_filename": "train_007592.png",
+        "reversed_imgid": 10078,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      },
+      {
+        "family_id": "FAM-train-train_000014",
+        "source_filename": "train_000014.png",
+        "source_imgid": 12,
+        "reversed_filename": "train_007593.png",
+        "reversed_imgid": 10079,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      },
+      {
+        "family_id": "FAM-train-train_000015",
+        "source_filename": "train_000015.png",
+        "source_imgid": 13,
+        "reversed_filename": "train_007594.png",
+        "reversed_imgid": 10080,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      },
+      {
+        "family_id": "FAM-train-train_000016",
+        "source_filename": "train_000016.png",
+        "source_imgid": 14,
+        "reversed_filename": "train_007595.png",
+        "reversed_imgid": 10081,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      }
+    ],
+    "val": [
+      {
+        "family_id": "FAM-val-val_000001",
+        "source_filename": "val_000001.png",
+        "source_imgid": 6815,
+        "reversed_filename": "val_001439.png",
+        "reversed_imgid": 13484,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      },
+      {
+        "family_id": "FAM-val-val_000002",
+        "source_filename": "val_000002.png",
+        "source_imgid": 6816,
+        "reversed_filename": "val_001440.png",
+        "reversed_imgid": 13485,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      },
+      {
+        "family_id": "FAM-val-val_000003",
+        "source_filename": "val_000003.png",
+        "source_imgid": 6817,
+        "reversed_filename": "val_001441.png",
+        "reversed_imgid": 13486,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      },
+      {
+        "family_id": "FAM-val-val_000004",
+        "source_filename": "val_000004.png",
+        "source_imgid": 6818,
+        "reversed_filename": "val_001442.png",
+        "reversed_imgid": 13487,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      },
+      {
+        "family_id": "FAM-val-val_000018",
+        "source_filename": "val_000018.png",
+        "source_imgid": 6832,
+        "reversed_filename": "val_001443.png",
+        "reversed_imgid": 13488,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      }
+    ],
+    "test": [
+      {
+        "family_id": "FAM-test-test_000004",
+        "source_filename": "test_000004.png",
+        "source_imgid": 8151,
+        "reversed_filename": "test_002136.png",
+        "reversed_imgid": 14151,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      },
+      {
+        "family_id": "FAM-test-test_000017",
+        "source_filename": "test_000017.png",
+        "source_imgid": 8164,
+        "reversed_filename": "test_002137.png",
+        "reversed_imgid": 14152,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      },
+      {
+        "family_id": "FAM-test-test_000018",
+        "source_filename": "test_000018.png",
+        "source_imgid": 8165,
+        "reversed_filename": "test_002138.png",
+        "reversed_imgid": 14153,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      },
+      {
+        "family_id": "FAM-test-test_000019",
+        "source_filename": "test_000019.png",
+        "source_imgid": 8166,
+        "reversed_filename": "test_002139.png",
+        "reversed_imgid": 14154,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      },
+      {
+        "family_id": "FAM-test-test_000020",
+        "source_filename": "test_000020.png",
+        "source_imgid": 8167,
+        "reversed_filename": "test_002140.png",
+        "reversed_imgid": 14155,
+        "provenance_method": "crc32_size_bijection",
+        "ab_swapped_verified": true,
+        "label_identical_verified": true
+      }
+    ]
+  },
+  "source_archives": {
+    "dataset_repository": "sushantnemade/LEVIR-MCI-augmented",
+    "revision": "3844bd00748c4d79af90e7a002f919b0dd20bb13",
+    "original_archive": {
+      "filename": "LEVIR-MCI-dataset.zip",
+      "expected_archive_sha256": "8f7d52298fa3ca32aec983e84addef80f61ad7d981c0ff97a92c5880c4b83e9d",
+      "archive_bytes": 2771943190,
+      "range_bytes_read": 6415607
+    },
+    "augmented_archive": {
+      "filename": "LEVIR-MCI-augmented_dataset.zip",
+      "expected_archive_sha256": "eebea05866266496742fc31ad63327237e812cda8b3fdd1720123c839d1701c9",
+      "archive_bytes": 4212576803,
+      "range_bytes_read": 11073795
+    }
+  }
+}

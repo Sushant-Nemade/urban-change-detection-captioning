@@ -96,11 +96,14 @@ def create_app(checkpoint=None, vocab=None, device=None):
             result = await run_in_threadpool(predict)
         except ValueError as exc:
             raise HTTPException(422, str(exc)) from exc
-        return {
+        response_payload = {
             **result.metadata(),
             "mask_png_base64": encode_png(result.mask_rgb),
             "labels_png_base64": encode_png(result.labels),
         }
+        if result.audit_card_rgb is not None:
+            response_payload["audit_card_png_base64"] = encode_png(result.audit_card_rgb)
+        return response_payload
 
     return application
 

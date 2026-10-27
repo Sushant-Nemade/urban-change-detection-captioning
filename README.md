@@ -57,7 +57,7 @@ urban-change predict \
 
 On Windows, activate with `.venv\Scripts\Activate.ps1`. For CUDA and the tested Linux CPU dependency snapshot, see [installation](docs/installation.md).
 
-Each prediction writes `mask.png`, indexed `labels.png`, `caption.txt`, and `prediction.json` with the checkpoint SHA-256 and inference timing. Downloads use pinned artifact revisions and mandatory SHA-256 verification.
+Each prediction writes `mask.png`, indexed `labels.png`, `audit_card.png` (side-by-side $T_1$, $T_2$, change mask, and bounding-box overlay), `caption.txt`, `audit_report.json`, and `prediction.json` with connected-component bounding boxes, pixel-area change percentages, checkpoint SHA-256, and inference timing. Downloads use pinned artifact revisions and mandatory SHA-256 verification.
 
 | Label | Meaning | Visualization |
 |---|---|---|
@@ -127,7 +127,7 @@ Downloaded data, weights, generated tokens, and run outputs stay in ignored loca
 
 ## Results and scope
 
-The verified trained checkpoint runs on original and reversed test pairs. Archive metadata contains 10,077 original pairs and 15,115 augmented pairs, each with five captions. A full benchmark still requires exact split and decoding settings; scores embedded in old checkpoint filenames are not treated as reproduced test results. See [results and validation](docs/results.md) for the measured software checks, qualitative predictions, and the author’s separate removal-case montage still to be supplied.
+The verified trained checkpoint runs on original and reversed test pairs. Archive metadata contains 10,077 original pairs and 15,115 augmented pairs, each with five captions. Split-family provenance auditing ([docs/provenance_audit_report.json](docs/provenance_audit_report.json)) confirms all 5,038 temporal-reversal pairs (`train` 3,407, `val` 667, `test` 964) map 1-to-1 to their source changed families with zero cross-split leakage (`cross_split_leakage_count: 0`). Directional evaluation on the committed checksum-verified test slice ([docs/directional_eval_report.json](docs/directional_eval_report.json)) records `0.9767` mask symmetry mIoU (`99.03%` pixel agreement) and `1.0000` caption polarity inversion rate. A full 964-pair benchmark still requires exact local archive and decoding execution; scores embedded in old checkpoint filenames are not treated as reproduced test results. See [results and validation](docs/results.md) for the measured software checks, qualitative predictions, and the author’s separate removal-case montage still to be supplied.
 
 This is a research implementation for aligned urban satellite imagery. Captions can omit or misdescribe changes, particularly outside the training domain. Verify predictions against the images and masks; reversing inputs alone does not establish reliable removal detection.
 

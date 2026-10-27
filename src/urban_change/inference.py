@@ -15,6 +15,7 @@ from urban_change.checkpoints import load_checkpoint
 from urban_change.data.text import load_vocab
 from urban_change.models.system import ChangeModel, config_from_checkpoint
 from urban_change.runtime import resolve_device
+from urban_change.visual_audit import render_visual_audit_card, summarize_mask_regions
 
 MEAN = np.array([0.39073, 0.38623, 0.32989], dtype=np.float32) * 255
 STD = np.array([0.15329, 0.14628, 0.13648], dtype=np.float32) * 255
@@ -45,14 +46,21 @@ class Prediction:
     mask_rgb: np.ndarray
     elapsed_ms: float
     checkpoint_sha256: str
+    audit_card_rgb: np.ndarray | None = None
+    audit_report: dict | None = None
 
     def metadata(self) -> dict:
+        region_info = self.audit_report or summarize_mask_regions(self.labels)
         return {
             "caption": self.caption,
             "elapsed_ms": round(self.elapsed_ms, 2),
             "checkpoint_sha256": self.checkpoint_sha256,
             "mask_shape": list(self.labels.shape),
             "classes": {"0": "unchanged", "1": "road change", "2": "building change"},
+            "pixel_counts": region_info["pixel_counts"],
+            "area_percentages": region_info["area_percentages"],
+            "bounding_box_counts": region_info["bounding_box_counts"],
+            "bounding_boxes": region_info["bounding_boxes"],
         }
 
 
@@ -108,16 +116,32 @@ class ChangePredictor:
         if self.device.type == "cuda":
             torch.cuda.synchronize(self.device)
         elapsed = (time.perf_counter() - started) * 1000
+        caption_text = decode_sequence(sequence, self.vocab)
+        card_rgb, audit_meta = render_visual_audit_card(
+            image_a=image_a,
+            image_b=image_b,
+            labels=labels,
+            caption=caption_text,
+            checkpoint_sha256=self.checkpoint_sha256,
+        )
         return Prediction(
-            decode_sequence(sequence, self.vocab),
+            caption_text,
             labels,
             PALETTE[labels],
             elapsed,
             self.checkpoint_sha256,
+            audit_card_rgb=card_rgb,
+            audit_report=audit_meta,
         )
 
 
-def save_prediction(prediction: Prediction, output: str | Path, overwrite: bool = False) -> Path:
+def save_prediction(
+    prediction: Prediction,
+    output: str | Path,
+    overwrite: bool = False,
+    image_a: Image.Image | None = None,
+    image_b: Image.Image | None = None,
+) -> Path:
     output = Path(output)
     if output.exists() and any(output.iterdir()) and not overwrite:
         raise FileExistsError(
@@ -126,6 +150,23 @@ def save_prediction(prediction: Prediction, output: str | Path, overwrite: bool 
     output.mkdir(parents=True, exist_ok=True)
     Image.fromarray(prediction.labels).save(output / "labels.png")
     Image.fromarray(prediction.mask_rgb).save(output / "mask.png")
+
+    card_rgb = prediction.audit_card_rgb
+    audit_meta = prediction.audit_report
+    if card_rgb is None or audit_meta is None:
+        fallback_a = image_a if image_a is not None else Image.fromarray(prediction.mask_rgb)
+        fallback_b = image_b if image_b is not None else Image.fromarray(prediction.mask_rgb)
+        card_rgb, audit_meta = render_visual_audit_card(
+            image_a=fallback_a,
+            image_b=fallback_b,
+            labels=prediction.labels,
+            caption=prediction.caption,
+            checkpoint_sha256=prediction.checkpoint_sha256,
+        )
+    Image.fromarray(card_rgb).save(output / "audit_card.png")
+    (output / "audit_report.json").write_text(
+        json.dumps(audit_meta, indent=2) + "\n", encoding="utf-8"
+    )
     (output / "caption.txt").write_text(prediction.caption + "\n", encoding="utf-8")
     (output / "prediction.json").write_text(
         json.dumps(prediction.metadata(), indent=2) + "\n", encoding="utf-8"

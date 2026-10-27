@@ -23,12 +23,17 @@ def load_predictor(path, modified_ns, device):
 def result_archive(prediction):
     archive = io.BytesIO()
     with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as target:
-        for name, array in [("mask.png", prediction.mask_rgb), ("labels.png", prediction.labels)]:
+        items = [("mask.png", prediction.mask_rgb), ("labels.png", prediction.labels)]
+        if prediction.audit_card_rgb is not None:
+            items.append(("audit_card.png", prediction.audit_card_rgb))
+        for name, array in items:
             image = io.BytesIO()
             Image.fromarray(array).save(image, format="PNG")
             target.writestr(name, image.getvalue())
         target.writestr("caption.txt", prediction.caption + "\n")
         target.writestr("prediction.json", json.dumps(prediction.metadata(), indent=2))
+        if prediction.audit_report is not None:
+            target.writestr("audit_report.json", json.dumps(prediction.audit_report, indent=2))
     return archive.getvalue()
 
 
@@ -118,12 +123,26 @@ def main():
         with caption_column:
             st.subheader("What changed")
             st.write(prediction.caption or "The decoder returned no descriptive tokens.")
+            meta = prediction.metadata()
+            pcts = meta.get("area_percentages", {})
+            if pcts:
+                st.caption(
+                    f"Changed area: {pcts.get('total_changed_pct', 0.0):.2f}% "
+                    f"(Road: {pcts.get('road_change_pct', 0.0):.2f}%, "
+                    f"Building: {pcts.get('building_change_pct', 0.0):.2f}%)"
+                )
             st.caption(f"Inference time: {prediction.elapsed_ms / 1000:.2f} seconds")
             st.download_button(
                 "Download results",
                 result_archive(prediction),
                 "urban-change-results.zip",
                 mime="application/zip",
+                width="stretch",
+            )
+        if prediction.audit_card_rgb is not None:
+            st.image(
+                prediction.audit_card_rgb,
+                caption="Auditable visual report card (T1, T2, Change Mask, Overlay + Bounding Boxes)",
                 width="stretch",
             )
     elif a is None or b is None:
